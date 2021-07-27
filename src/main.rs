@@ -18,7 +18,7 @@ use termimad::{Area, MadSkin, MadView, Result as TermResult};
 #[structopt(name = "SCP Terminal")]
 /// Use the Up or Down arrow keys to move through the page.
 /// Use PgUp or PgDown to move an entire page up or down.
-/// Press any other key to quit.
+/// Press any other key to quit the program.
 struct Opt {
     /// SCP code
     ///
