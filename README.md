@@ -88,3 +88,6 @@ Here's how you can make reading the wiki through terminal more appealing.
 5. On the right you will see various settings. Click on the second tab (it should be called "Appeareance") and switch on "Retro terminal effects". You can also increase the font size a bit to make it more readable.
    
 Now you can use SCP Terminal from this Windows PowerShell modified to look like an old terminal from the 70's!.
+
+![image](https://user-images.githubusercontent.com/50493113/127180878-76c2de05-b8a5-4680-bddf-006c348b7f9c.png)
+
