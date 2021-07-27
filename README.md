@@ -55,6 +55,7 @@ or
 to see the help page:
 ```
 SCP Terminal 0.1.0
+Use the Up or Down arrow keys to move through the page. Use PgUp or PgDown to move an entire page up or down. Press any other key to quit
 
 USAGE:
     scp_terminal.exe <scp>
