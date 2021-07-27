@@ -15,7 +15,7 @@ use structopt::StructOpt;
 use termimad::{Area, MadSkin, MadView, Result as TermResult};
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "SCP Reader")]
+#[structopt(name = "SCP Terminal")]
 struct Opt {
     /// SCP code
     ///
