@@ -30,7 +30,7 @@ to run the application.
 ### Example
 
 ```
-cargo run --release 035
+cargo run --release -- 035
 ```
 or 
 ```
