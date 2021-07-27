@@ -3,7 +3,7 @@ SCP Terminal
 
 SCP Terminal is a simple terminal application written in Rust that lets user to browse the [SCP Foundation wiki](https://scp-wiki.wikidot.com) from terminal. 
 
-## Installation Usage
+## Installation
 
 ### With Rust compiler
 
