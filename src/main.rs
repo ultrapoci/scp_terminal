@@ -68,8 +68,8 @@ fn get_markdown(element: &Element) -> (String, String) {
     let (s1, s2) = match element.name() {
         "a" => ("", ""),
         "strong" => ("**", "**"),
-        "em" => ("*", "*"),
-        "li" => ("* ", "\n"),
+        "em" => ("*", "* "),
+        "li" => ("- ", "\n"),
         "p" => ("\n", "\n"),
         "sup" => ("```[", "]```"),
         "div" if element.attr("class") == Some("title") => ("\n## ", "\n"),
@@ -89,7 +89,7 @@ fn traverse(node: NodeRef<Node>) -> String {
     match node.value() {
         Node::Text(text) => text.text.to_string().replace("\n", ""),
         Node::Element(elem) if elem.name() == "br" => "\n".to_string(),
-        Node::Element(elem) if elem.name() == "hr" => "---".to_string(), 
+        Node::Element(elem) if elem.name() == "hr" => "---".to_string(),
         Node::Element(elem) => {
             let not_allowed_divs = [
                 Some("page-rate-widget-box"),
@@ -122,6 +122,8 @@ fn traverse(node: NodeRef<Node>) -> String {
                     }
                     s.push_str(&end_marker);
 
+                    // TODO use match statement
+
                     if elem.name() == "blockquote" {
                         s = s
                             .trim()
@@ -137,14 +139,19 @@ fn traverse(node: NodeRef<Node>) -> String {
                         s = format!("\n{}\n", s);
                     }
 
-                    /* if elem.name() == "ul" {
-                        s = s
-                            .trim()
-                            .split('\n')
-                            .map(|line| format!("\t{}", line))
-                            .join("\n");
-                        s = format!("\n{}\n", s);
-                    } */
+                    if elem.name() == "ul" {
+                        dbg!(elem.name());
+                        if let Some(node_parent) = node.parent() {
+                            //dbg!(node_parent);
+                            if let Node::Element(elem_parent) = node_parent.value() {
+                                dbg!(elem_parent);
+                                if elem_parent.name() == "li" {
+                                    //dbg!(elem_parent.name());
+                                    s = format!("\n{}", s.split("\n").map(|line| format!("  {}", line)).join("\n"));
+                                }
+                            }
+                        }
+                    }
 
                     if elem.name() == "table" {
                         let n_col = s.matches("<td>").count() / s.matches("<tr>").count();
