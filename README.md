@@ -38,7 +38,7 @@ or
 ```
 .\scp_terminal 035
 ```
-will show [SCP-035](https://scp-wiki.wikidot.com/scp-035)'s page. Note that at the moment the application is sensible to trailing zeros, meaning that "35" in the example above won't work. 
+will show [SCP-035](https://scp-wiki.wikidot.com/scp-035)'s page. Note that at the moment the application is sensible to leading zeros, meaning that "35" in the example above won't work. 
 
 ### Navigation
 
