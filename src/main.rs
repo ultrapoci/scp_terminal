@@ -110,11 +110,10 @@ fn traverse(node: NodeRef<Node>) -> String {
                 {
                     "".to_string()
                 }
+
                 "script" => "".to_string(),
                 _ => {
-                    let t = get_markdown(elem);
-                    let begin_marker = t.0;
-                    let end_marker = t.1;
+                    let (begin_marker, end_marker) = get_markdown(elem);
 
                     let mut s = String::from(&begin_marker);
                     for child in node.children() {
@@ -122,50 +121,55 @@ fn traverse(node: NodeRef<Node>) -> String {
                     }
                     s.push_str(&end_marker);
 
-                    // TODO use match statement
+                    match elem.name() {
+                        "blockquote" => {
+                            format!(
+                                "\n{}\n",
+                                s.trim()
+                                    .split('\n')
+                                    .map(|line| {
+                                        if line.contains("---") {
+                                            "---".to_string()
+                                        } else {
+                                            format!("> {}", line)
+                                        }
+                                    })
+                                    .join("\n")
+                            )
+                        }
 
-                    if elem.name() == "blockquote" {
-                        s = s
-                            .trim()
-                            .split('\n')
-                            .map(|line| {
-                                if line.contains("---") {
-                                    "---".to_string()
-                                } else {
-                                    format!("> {}", line)
+                        "ul" => {
+                            if let Some(parent_node) = node.parent() {
+                                match parent_node.value() {
+                                    Node::Element(parent_elem) if parent_elem.name() == "li" => {
+                                        format!(
+                                            "\n{}",
+                                            s.split("\n")
+                                                .map(|line| format!("  {}", line))
+                                                .join("\n")
+                                        )
+                                    }
+                                    _ => s,
                                 }
-                            })
-                            .join("\n");
-                        s = format!("\n{}\n", s);
-                    }
-
-                    if elem.name() == "ul" {
-                        dbg!(elem.name());
-                        if let Some(node_parent) = node.parent() {
-                            //dbg!(node_parent);
-                            if let Node::Element(elem_parent) = node_parent.value() {
-                                dbg!(elem_parent);
-                                if elem_parent.name() == "li" {
-                                    //dbg!(elem_parent.name());
-                                    s = format!("\n{}", s.split("\n").map(|line| format!("  {}", line)).join("\n"));
-                                }
+                            } else {
+                                s
                             }
                         }
-                    }
 
-                    if elem.name() == "table" {
-                        let n_col = s.matches("<td>").count() / s.matches("<tr>").count();
-                        let line = "|:--:".repeat(n_col);
-                        s.replace("<td>", "|")
-                            .replace("</td>", "")
-                            .replace("<tbody>", "")
-                            .replace("</tbody>", "|-\n")
-                            .replace("<th>", "|**")
-                            .replace("</th>", "**")
-                            .replace("<tr>", &format!("{}\n", &line))
-                            .replace("</tr>", "\n")
-                    } else {
-                        s
+                        "table" => {
+                            let n_col = s.matches("<td>").count() / s.matches("<tr>").count();
+                            let line = "|:--:".repeat(n_col);
+                            s.replace("<td>", "|")
+                                .replace("</td>", "")
+                                .replace("<tbody>", "")
+                                .replace("</tbody>", "|-\n")
+                                .replace("<th>", "|**")
+                                .replace("</th>", "**")
+                                .replace("<tr>", &format!("{}\n", &line))
+                                .replace("</tr>", "\n")
+                        }
+
+                        _ => s,
                     }
                 }
             }
