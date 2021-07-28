@@ -223,7 +223,7 @@ async fn main() -> Result<()> {
     let url = format!("{}{}", "https://scp-wiki.wikidot.com/scp-", opt.scp);
 
     let mut skin = MadSkin::default();
-    skin.bold.set_fg(Red);
+    skin.bold.set_fg(DarkRed);
     skin.headers[0].add_attr(Attribute::Reverse);
     skin.inline_code.set_bg(Reset);
     skin.inline_code.set_fg(DarkYellow);
